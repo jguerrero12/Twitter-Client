@@ -131,7 +131,7 @@
                                                 <constraint firstItem="VJN-dZ-5Ob" firstAttribute="leading" secondItem="FOs-OZ-H2j" secondAttribute="trailing" constant="8" id="K26-C7-BuF"/>
                                                 <constraint firstItem="aEW-by-zbi" firstAttribute="centerY" secondItem="kJH-o1-Ufm" secondAttribute="centerY" id="NN5-q2-09D"/>
                                                 <constraint firstItem="FOs-OZ-H2j" firstAttribute="top" secondItem="2Gu-3G-9HZ" secondAttribute="top" constant="8" id="Pz7-Jh-JB6"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="p0G-ts-WtN" secondAttribute="trailing" constant="227" id="QxP-HI-2Ug"/>
+                                                <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="p0G-ts-WtN" secondAttribute="trailing" constant="8" id="QxP-HI-2Ug"/>
                                                 <constraint firstItem="xl5-HX-pgC" firstAttribute="centerY" secondItem="VJN-dZ-5Ob" secondAttribute="centerY" id="Sqq-Qi-ENk"/>
                                                 <constraint firstItem="Uwg-43-al7" firstAttribute="leading" secondItem="kJH-o1-Ufm" secondAttribute="trailing" constant="8" id="W1b-9i-YBa"/>
                                                 <constraint firstItem="gUK-wL-Krh" firstAttribute="centerY" secondItem="VJN-dZ-5Ob" secondAttribute="centerY" id="cHE-eO-dJn"/>
@@ -166,6 +166,9 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="New" id="Xl7-fI-KAh"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="2tS-ig-5cU" id="QZ1-8w-cFm"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gi4-qS-mEL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
