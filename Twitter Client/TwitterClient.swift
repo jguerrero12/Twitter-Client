@@ -66,6 +66,24 @@ class TwitterClient: BDBOAuth1SessionManager {
         
     }
     
+    // retweet function - needs work
+    func retweet(){
+        post("1.1/statuses/retweet/:id.json", parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
+            <#code#>
+        }) { (task: URLSessionDataTask?, error: Error) in
+            
+        }
+    }
+    
+    // favoriting function - needs work
+    func favorite(){
+        post("/1.1/favorites/create.json", parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
+            
+        }) { (task: URLSessionDataTask?, error: Error) in
+            
+        }
+    }
+    
     func homeTimeline(success: @escaping ([Tweet]) -> (), failure: @escaping (Error) -> ()){
         get("1.1/statuses/home_timeline.json", parameters: nil, progress: nil, success:{ (task: URLSessionDataTask, response: Any?) in
             

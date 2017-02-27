@@ -16,11 +16,23 @@ class TweetCell: UITableViewCell {
     @IBOutlet weak var timeAgoLabel: UILabel!
     @IBOutlet weak var sndUsernameLabel: UILabel!
     
+    var tweet: Tweet!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
 
+    @IBAction func onRetweet(_ sender: Any) {
+        
+        
+    }
+    
+    @IBAction func onFavoriting(_ sender: Any) {
+        
+        
+    }
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
