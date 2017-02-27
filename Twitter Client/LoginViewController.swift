@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  LoginViewController.swift
 //  Twitter Client
 //
 //  Created by Jose Guerrero on 2/20/17.
@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import BDBOAuth1Manager
 
 class ViewController: UIViewController {
 
@@ -19,7 +20,17 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
+    @IBAction func onLoginButton(_ sender: Any) {
+        TwitterClient.sharedInstance?.login(success: {
+            self.performSegue(withIdentifier: "loginSegue", sender: nil)
+        },
+        failure: {(error: Error) in
+            print("Error: \(error.localizedDescription)")
+        })
+    }
+    
+    
 
 }
 
