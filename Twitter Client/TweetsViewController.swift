@@ -18,7 +18,7 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.estimatedRowHeight = 95
+        tableView.estimatedRowHeight = 87
         tableView.rowHeight = UITableViewAutomaticDimension
 
         TwitterClient.sharedInstance?.homeTimeline(success: {(tweets: [Tweet]) in
@@ -51,9 +51,10 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let tweet = tweets[indexPath.row]
         
         cell?.tweetTextLabel.text = tweet.text
-        cell?.timeAgoLabel.text = "\((tweet.timestamp?.timeIntervalSinceNow)!/60)m Ago"
+        cell?.timeAgoLabel.text = "\(tweet.timestamp?.description)"
         cell?.usernameLabel.text = tweet.username
-        cell?.sndUsernameLabel.text = "@\(tweet.username)"
+        cell?.sndUsernameLabel.text = "@\(tweet.username!)"
+        
         if let url = tweet.profileIconURL {
         cell?.profileImage.setImageWith(url)
         }
@@ -63,6 +64,10 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         return cell!
         
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
     override func didReceiveMemoryWarning() {

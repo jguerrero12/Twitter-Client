@@ -25,11 +25,11 @@ class Tweet: NSObject {
         favoritesCount = (dictionary["favorites_count"] as? Int) ?? 0
         username = user?.object(forKey: "name") as? String
         let timeStampString = dictionary["created_at"] as? String
-        profileIconURL = user?.object(forKey: "profile_image_url_https") as? URL
+        profileIconURL = user?.object(forKey: "profile_image_url") as? URL
         
         if let timeStampString = timeStampString{
             let formatter = DateFormatter()
-            formatter.dateFormat = "EEE MMM d HH:mm:ss Z y"
+            formatter.dateFormat = "EEE MMM d"
             timestamp = formatter.date(from: timeStampString)
         }
         
