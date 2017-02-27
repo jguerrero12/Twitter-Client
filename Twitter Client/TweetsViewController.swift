@@ -48,9 +48,18 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "tweetCell", for: indexPath) as? TweetCell
         
-        let tweetTxt = tweets[indexPath.row].text
+        let tweet = tweets[indexPath.row]
         
-        cell?.tweetTextLabel.text = tweetTxt!
+        cell?.tweetTextLabel.text = tweet.text
+        cell?.timeAgoLabel.text = "\((tweet.timestamp?.timeIntervalSinceNow)!/60)m Ago"
+        cell?.usernameLabel.text = tweet.username
+        cell?.sndUsernameLabel.text = "@\(tweet.username)"
+        if let url = tweet.profileIconURL {
+        cell?.profileImage.setImageWith(url)
+        }
+        else{
+            cell?.profileImage.image = UIImage(named: "TwitterLogoBlue")
+        }
         
         return cell!
         
