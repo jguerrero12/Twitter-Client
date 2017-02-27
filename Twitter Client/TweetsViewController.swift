@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AFNetworking
 
 class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
@@ -49,19 +50,18 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let cell = tableView.dequeueReusableCell(withIdentifier: "tweetCell", for: indexPath) as? TweetCell
         
         let tweet = tweets[indexPath.row]
-        
         cell?.tweetTextLabel.text = tweet.text
-        cell?.timeAgoLabel.text = "\(tweet.timestamp?.description)"
+        cell?.timeAgoLabel.text = "\(tweet.timestamp!)"
         cell?.usernameLabel.text = tweet.username
         cell?.sndUsernameLabel.text = "@\(tweet.username!)"
         
         if let url = tweet.profileIconURL {
-        cell?.profileImage.setImageWith(url)
+            cell?.profileImage.setImageWith(url)
         }
         else{
             cell?.profileImage.image = UIImage(named: "TwitterLogoBlue")
         }
-        
+                
         return cell!
         
     }

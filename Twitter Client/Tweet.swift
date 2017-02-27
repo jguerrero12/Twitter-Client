@@ -11,7 +11,7 @@ import UIKit
 class Tweet: NSObject {
     
     var text: String?
-    var timestamp: Date?
+    var timestamp: String?
     var retweetCount: Int = 0
     var favoritesCount: Int = 0
     var username: String?
@@ -25,12 +25,16 @@ class Tweet: NSObject {
         favoritesCount = (dictionary["favorites_count"] as? Int) ?? 0
         username = user?.object(forKey: "name") as? String
         let timeStampString = dictionary["created_at"] as? String
-        profileIconURL = user?.object(forKey: "profile_image_url") as? URL
+        let chkProfileURL = user?["profile_image_url_https"] as? String
+        if chkProfileURL != nil {
+            profileIconURL = URL(string: chkProfileURL!)
+        }
         
         if let timeStampString = timeStampString{
             let formatter = DateFormatter()
-            formatter.dateFormat = "EEE MMM d"
-            timestamp = formatter.date(from: timeStampString)
+            formatter.dateFormat = "EEE MMM d HH:mm:ss Z y"
+            let date = formatter.date(from: timeStampString)
+            timestamp = DateFormatter.localizedString(from: date!, dateStyle: .short, timeStyle: .none)
         }
         
     }
@@ -39,7 +43,7 @@ class Tweet: NSObject {
         var tweets = [Tweet]()
         
         
-        for dictionary in dictionaries{
+        for dictionary in dictionaries {
             let tweet = Tweet(dictionary: dictionary)
             
             tweets.append(tweet)
