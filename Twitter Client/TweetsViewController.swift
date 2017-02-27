@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TweetsViewController: UIViewController {
+class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     var tweets: [Tweet]!
     
@@ -19,12 +19,27 @@ class TweetsViewController: UIViewController {
             self.tweets = tweets
             
             for tweet in tweets{
-                print(tweet)
+                print(tweet.text!)
             }
         }, failure: {(error:Error) in
             print(error.localizedDescription)
         })
         // Do any additional setup after loading the view.
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if tweets != nil {
+            return tweets.count
+        }
+        else{
+            return 0
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "tweetCell", for: indexPath) as? TweetCell
+        cell.
+        
     }
 
     override func didReceiveMemoryWarning() {
