@@ -16,13 +16,20 @@ class Tweet: NSObject {
     var favoritesCount: Int = 0
     var username: String?
     var profileIconURL: URL?
+    var tweetID: String?
+    var didFavorite: Bool?
+    var didRetweet: Bool?
+    
     
     init(dictionary: NSDictionary) {
         let user = dictionary["user"] as? NSDictionary
+        didFavorite = dictionary["favorited"] as? Bool
+        didRetweet = dictionary["retweeted"] as? Bool
         
+        tweetID = dictionary["id_str"] as? String
         text = dictionary["text"] as? String
         retweetCount = (dictionary["retweet_count"] as? Int) ?? 0
-        favoritesCount = (dictionary["favorites_count"] as? Int) ?? 0
+        favoritesCount = (dictionary["favorite_count"] as? Int) ?? 0
         username = user?.object(forKey: "name") as? String
         let timeStampString = dictionary["created_at"] as? String
         let chkProfileURL = user?["profile_image_url_https"] as? String

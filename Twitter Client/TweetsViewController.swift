@@ -9,8 +9,8 @@
 import UIKit
 import AFNetworking
 
-class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-
+class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TableViewCellDelegate {
+    
     @IBOutlet weak var tableView: UITableView!
     var tweets: [Tweet]!
     
@@ -21,7 +21,7 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableView.dataSource = self
         tableView.estimatedRowHeight = 87
         tableView.rowHeight = UITableViewAutomaticDimension
-
+        
         TwitterClient.sharedInstance?.homeTimeline(success: {(tweets: [Tweet]) in
             self.tweets = tweets
             
@@ -50,44 +50,76 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let cell = tableView.dequeueReusableCell(withIdentifier: "tweetCell", for: indexPath) as? TweetCell
         
         let tweet = tweets[indexPath.row]
-        cell?.tweetTextLabel.text = tweet.text
-        cell?.timeAgoLabel.text = "\(tweet.timestamp!)"
-        cell?.usernameLabel.text = tweet.username
-        cell?.sndUsernameLabel.text = "@\(tweet.username!)"
+        cell?.tweet = tweet
+        cell?.indexPath = indexPath
+        cell?.delegate = self
         
-        if let url = tweet.profileIconURL {
-            cell?.profileImage.setImageWith(url)
+        return cell!
+        
+    }
+    
+    func onRetweet(for cell:TweetCell) {
+        if cell.tweet.didRetweet == false {
+            TwitterClient.sharedInstance?.retweet(tweetID: cell.tweet.tweetID!, success: { (tweet: Tweet) in
+                self.tweets[(cell.indexPath?.row)!] = tweet
+                self.tableView.reloadRows(at: [cell.indexPath!], with: .none)
+            }, failure: { (error: Error) in
+                print(error.localizedDescription)
+            })
         }
         else{
-            cell?.profileImage.image = UIImage(named: "TwitterLogoBlue")
-        }
+            TwitterClient.sharedInstance?.unretweet(tweetID: cell.tweet.tweetID!, success: { (tweet: Tweet) in
+                self.tweets[(cell.indexPath?.row)!] = tweet
+                self.tableView.reloadRows(at: [cell.indexPath!], with: .none)
                 
-        return cell!
+            }, failure: { (error: Error) in
+                print(error.localizedDescription)
+            })
+        }
+    }
+    
+    func onFavorite(for cell:TweetCell) {
+        if cell.tweet.didFavorite == false {
+            TwitterClient.sharedInstance?.favorite(tweetID: cell.tweet.tweetID!, success: { (tweet: Tweet) in
+                self.tweets[(cell.indexPath?.row)!] = tweet
+                self.tableView.reloadRows(at: [cell.indexPath!], with: .none)
+            }, failure: { (error: Error) in
+                print(error.localizedDescription)
+            })
+        }
+        else{
+            TwitterClient.sharedInstance?.unfavorite(tweetID: cell.tweet.tweetID!, success: { (tweet: Tweet) in
+                self.tweets[(cell.indexPath?.row)!] = tweet
+                self.tableView.reloadRows(at: [cell.indexPath!], with: .none)
+            }, failure: { (error: Error) in
+                print(error.localizedDescription)
+            })
+        }
         
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-
+    
     @IBAction func onLogoutButton(_ sender: Any) {
         TwitterClient.sharedInstance?.logout()
         
     }
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }
