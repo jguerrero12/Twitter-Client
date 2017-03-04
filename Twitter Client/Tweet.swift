@@ -11,10 +11,11 @@ import UIKit
 class Tweet: NSObject {
     
     var text: String?
-    var timestamp: String?
+    var timestamp: Date?
     var retweetCount: Int = 0
     var favoritesCount: Int = 0
     var username: String?
+    var screenname: String?
     var profileIconURL: URL?
     var tweetID: String?
     var didFavorite: Bool?
@@ -26,6 +27,7 @@ class Tweet: NSObject {
         didFavorite = dictionary["favorited"] as? Bool
         didRetweet = dictionary["retweeted"] as? Bool
         
+        screenname = user?["screen_name"] as? String
         tweetID = dictionary["id_str"] as? String
         text = dictionary["text"] as? String
         retweetCount = (dictionary["retweet_count"] as? Int) ?? 0
@@ -40,10 +42,8 @@ class Tweet: NSObject {
         if let timeStampString = timeStampString{
             let formatter = DateFormatter()
             formatter.dateFormat = "EEE MMM d HH:mm:ss Z y"
-            let date = formatter.date(from: timeStampString)
-            timestamp = DateFormatter.localizedString(from: date!, dateStyle: .short, timeStyle: .none)
+            timestamp = formatter.date(from: timeStampString)
         }
-        
     }
     
     class func tweetsWithArray(dictionaries: [NSDictionary]) -> [Tweet]{

@@ -25,9 +25,9 @@ class TweetCell: UITableViewCell {
     var tweet: Tweet!{
         didSet{
             tweetTextLabel.text = tweet.text
-            timeAgoLabel.text = "\(tweet.timestamp!)"
+            timeAgoLabel.text = "\(DateFormatter.localizedString(from: tweet.timestamp!, dateStyle: .short, timeStyle: .none))"
             usernameLabel.text = tweet.username
-            sndUsernameLabel.text = "@\(tweet.username!)"
+            sndUsernameLabel.text = "@\(tweet.screenname!)"
             if tweet.didFavorite! {
                 favoriteIcon.setImage(UIImage(named: "favor-icon-red"), for: .normal)
             }
