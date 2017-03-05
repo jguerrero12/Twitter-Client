@@ -118,6 +118,19 @@ class TwitterClient: BDBOAuth1SessionManager {
         }
     }
     
+    // Tweet function
+    func tweet(tweetTxt: String, inReplyTo: String = "", success: @escaping (Tweet) -> (), failure: @escaping (Error) -> ()){
+        post("1.1/statuses/update.json", parameters: ["status": tweetTxt, "in_reply_to_status_id": inReplyTo], progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
+            
+            let dictionary = response as! NSDictionary
+            let tweet = Tweet(dictionary: dictionary)
+            success(tweet)
+            
+        }) { (task: URLSessionDataTask?, error: Error) in
+            failure(error)
+        }
+    }
+    
     func homeTimeline(success: @escaping ([Tweet]) -> (), failure: @escaping (Error) -> ()){
         get("1.1/statuses/home_timeline.json", parameters: nil, progress: nil, success:{ (task: URLSessionDataTask, response: Any?) in
             

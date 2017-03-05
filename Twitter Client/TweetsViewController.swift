@@ -78,6 +78,12 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
+    @IBAction func updateCell(segue: UIStoryboardSegue) {
+        let detailVC = segue.source as? TweetDetailViewController
+        tweets[(detailVC?.indexPath.row)!] = (detailVC?.tweet)!
+        tableView.reloadRows(at: [(detailVC?.indexPath!)!], with: .none)
+    }
+    
     func onFavorite(for cell:TweetCell) {
         if cell.tweet.didFavorite == false {
             TwitterClient.sharedInstance?.favorite(tweetID: cell.tweet.tweetID!, success: { (tweet: Tweet) in
@@ -110,16 +116,15 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBAction func onLogoutButton(_ sender: Any) {
         TwitterClient.sharedInstance?.logout()
-        
     }
     
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let cell = sender as! TweetCell
         let indexPath = tableView.indexPath(for: cell)
         let tweet = tweets[indexPath!.row]
         let detailedViewController = segue.destination as! TweetDetailViewController
+        detailedViewController.indexPath = indexPath
         detailedViewController.tweet = tweet
-     
-     }
+    }
     
 }

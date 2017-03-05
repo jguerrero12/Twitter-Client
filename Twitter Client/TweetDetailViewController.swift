@@ -24,6 +24,9 @@ class TweetDetailViewController: UIViewController {
     // Tweet Model
     var tweet: Tweet!
     
+    // Calling cell's indexpath
+    var indexPath: IndexPath!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         update()
@@ -31,17 +34,48 @@ class TweetDetailViewController: UIViewController {
     
     // When user presses favorite...
     @IBAction func onFavorite(_ sender: Any) {
-        
+        if tweet.didFavorite == false {
+            TwitterClient.sharedInstance?.favorite(tweetID: tweet.tweetID!, success: { (tweet: Tweet) in
+                self.tweet = tweet
+                self.update()
+            }, failure: { (error: Error) in
+                print(error.localizedDescription)
+            })
+        }
+        else{
+            TwitterClient.sharedInstance?.unfavorite(tweetID: tweet.tweetID!, success: { (tweet: Tweet) in
+                self.tweet = tweet
+                self.update()
+            }, failure: { (error: Error) in
+                print(error.localizedDescription)
+            })
+        }
     }
     
     // When user presses retweet...
     @IBAction func onRetweet(_ sender: Any) {
-        
+        if tweet.didRetweet == false {
+            TwitterClient.sharedInstance?.retweet(tweetID: tweet.tweetID!, success: { (tweet: Tweet) in
+                self.tweet = tweet
+                self.update()
+            }, failure: { (error: Error) in
+                print(error.localizedDescription)
+            })
+        }
+        else{
+            TwitterClient.sharedInstance?.unretweet(tweetID: tweet.tweetID!, success: { (tweet: Tweet) in
+                self.tweet = tweet
+                self.update()
+                
+            }, failure: { (error: Error) in
+                print(error.localizedDescription)
+            })
+        }
     }
     
     // when user presses reply...
     @IBAction func onReply(_ sender: Any) {
-        
+        performSegue(withIdentifier: "postReplySegue", sender: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -79,14 +113,13 @@ class TweetDetailViewController: UIViewController {
         }
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    // this runs when runnning unwind segue, Need fix!
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if let NC = segue.destination as? UINavigationController{
+        let replyVC = NC.topViewController as! TweetViewController
+        replyVC.tweet = tweet
+        }
+        
     }
-    */
 
 }
