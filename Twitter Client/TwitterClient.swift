@@ -110,7 +110,7 @@ class TwitterClient: BDBOAuth1SessionManager {
     
     // favoriting function
     func favorite(tweetID: String, success: @escaping (Tweet) -> (), failure: @escaping (Error) -> ()){
-        post("/1.1/favorites/create.json?id=\(tweetID)", parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
+        post("1.1/favorites/create.json?id=\(tweetID)", parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
             
             let dictionary = response as! NSDictionary
             let tweet = Tweet(dictionary: dictionary)
@@ -123,7 +123,7 @@ class TwitterClient: BDBOAuth1SessionManager {
     
     // unfavoriting function
     func unfavorite(tweetID: String, success: @escaping (Tweet) -> (), failure: @escaping (Error) -> ()){
-        post("/1.1/favorites/destroy.json?id=\(tweetID)", parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
+        post("1.1/favorites/destroy.json?id=\(tweetID)", parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
             
             let dictionary = response as! NSDictionary
             let tweet = Tweet(dictionary: dictionary)
@@ -135,15 +135,28 @@ class TwitterClient: BDBOAuth1SessionManager {
     }
     
     // Tweet function
-    func tweet(tweetTxt: String, inReplyTo: String = "", success: @escaping (Tweet) -> (), failure: @escaping (Error) -> ()){
-        post("1.1/statuses/update.json", parameters: ["status": tweetTxt, "in_reply_to_status_id": inReplyTo], progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
-            
-            let dictionary = response as! NSDictionary
-            let tweet = Tweet(dictionary: dictionary)
-            success(tweet)
-            
-        }) { (task: URLSessionDataTask?, error: Error) in
-            failure(error)
+    func tweet(tweetTxt: String, inReplyTo: String? = nil, success: @escaping (Tweet) -> (), failure: @escaping (Error) -> ()){
+        if inReplyTo != nil {
+            post("1.1/statuses/update.json", parameters: ["status": tweetTxt, "in_reply_to_status_id": inReplyTo], progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
+                
+                let dictionary = response as! NSDictionary
+                let tweet = Tweet(dictionary: dictionary)
+                success(tweet)
+                
+            }) { (task: URLSessionDataTask?, error: Error) in
+                failure(error)
+            }
+        }
+        else {
+            post("1.1/statuses/update.json", parameters: ["status": tweetTxt], progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
+                
+                let dictionary = response as! NSDictionary
+                let tweet = Tweet(dictionary: dictionary)
+                success(tweet)
+                
+            }) { (task: URLSessionDataTask?, error: Error) in
+                failure(error)
+            }
         }
     }
     
