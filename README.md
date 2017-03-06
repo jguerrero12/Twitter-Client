@@ -60,7 +60,7 @@ Describe any challenges encountered while building the app.
 
 # Project 5 - Twitter Client
 
-Time spent: 12 hours spent in total
+Time spent: 14 hours spent in total
 
 ## User Stories
 
@@ -89,24 +89,26 @@ The following **optional** features are implemented:
 
 The following **additional** features are implemented:
 
-- [ ] List anything else that you can get done to improve the app functionality!
+- [x] any update to a tweet such as retweeting or favoriting in detailed tweet view is reflected in home view.
+- [x] themeing, unretweeting, unfavoriting
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
-1. 
-2. 
+1. I would like to discuss the details of implementing the profile page with animations such as blurring, paging, and the proper format and way to do it.
+2. I would like to discuss about the best practices in implementing an app such as this; looking for ways to reduce code redundencies and  simplify code.
 
 ## Video Walkthrough 
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://github.com/jguerrero12/Twitter-Client/blob/master/TwitterClientDemo_part2.gif?raw=true' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+- Discovered how to make multiple segues
+- (took time) When user creates a tweet, authentication error occures. 
 
 ## License
 
