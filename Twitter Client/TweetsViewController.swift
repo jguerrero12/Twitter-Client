@@ -13,6 +13,7 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBOutlet weak var tableView: UITableView!
     var tweets: [Tweet]!
+    var tempUser: User!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -108,6 +109,10 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
+    func onTapProfile(for cell: TweetCell) {
+        tempUser = cell.tweet.user
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -119,12 +124,41 @@ class TweetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let cell = sender as! TweetCell
-        let indexPath = tableView.indexPath(for: cell)
-        let tweet = tweets[indexPath!.row]
-        let detailedViewController = segue.destination as! TweetDetailViewController
-        detailedViewController.indexPath = indexPath
-        detailedViewController.tweet = tweet
+        
+        if(segue.identifier == "TweetDetailSegue"){
+            let cell = sender as! TweetCell
+            let indexPath = tableView.indexPath(for: cell)
+            let tweet = tweets[indexPath!.row]
+            let detailedViewController = segue.destination as! TweetDetailViewController
+            detailedViewController.indexPath = indexPath
+            detailedViewController.tweet = tweet
+        }
+        
+        if(segue.identifier == "showTweetProfileSegue"){
+            let profileViewController = segue.destination as! ProfilePageViewController
+            profileViewController.user = tempUser
+        }
+        
+        if(segue.identifier == "showUserProfileSegue"){
+            let profileViewController = segue.destination as! ProfilePageViewController
+            profileViewController.user = User.currentUser
+        }
+        
+        if(segue.identifier == "showNewTweetSegue"){
+            if let NC = segue.destination as? UINavigationController{
+                let tweetVC = NC.topViewController as! TweetViewController
+                tweetVC.user = User.currentUser
+                tweetVC.title = "Tweet"
+                
+            }
+        }
+        
     }
+   
+    
+    
+    
+    
+    
     
 }

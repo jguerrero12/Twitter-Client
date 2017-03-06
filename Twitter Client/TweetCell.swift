@@ -7,11 +7,13 @@
 //
 
 import UIKit
+import AFNetworking
 
 class TweetCell: UITableViewCell {
 
     weak var delegate: TableViewCellDelegate?
-    @IBOutlet weak var profileImage: UIImageView!
+    
+    @IBOutlet weak var profileImage: UIButton!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var tweetTextLabel: UILabel!
     @IBOutlet weak var timeAgoLabel: UILabel!
@@ -26,8 +28,8 @@ class TweetCell: UITableViewCell {
         didSet{
             tweetTextLabel.text = tweet.text
             timeAgoLabel.text = "\(DateFormatter.localizedString(from: tweet.timestamp!, dateStyle: .short, timeStyle: .none))"
-            usernameLabel.text = tweet.username
-            sndUsernameLabel.text = "@\(tweet.screenname!)"
+            usernameLabel.text = tweet.user?.name
+            sndUsernameLabel.text = "@\((tweet.user.screenName)!)"
             if tweet.didFavorite! {
                 favoriteIcon.setImage(UIImage(named: "favor-icon-red"), for: .normal)
             }
@@ -44,11 +46,12 @@ class TweetCell: UITableViewCell {
             favoritesCount.text = "\(tweet.favoritesCount)"
             retweetCount.text = "\(tweet.retweetCount)"
             
-            if let url = tweet.profileIconURL {
-                profileImage.setImageWith(url)
+            if let url = tweet.user?.profileURL {
+                profileImage.setBackgroundImageFor(
+                    .normal, with: url)
             }
             else{
-                profileImage.image = UIImage(named: "TwitterLogoBlue")
+                profileImage.imageView?.image = UIImage(named: "TwitterLogoBlue")
             }
         }
     }
@@ -58,6 +61,10 @@ class TweetCell: UITableViewCell {
         // Initialization code
     }
 
+    @IBAction func onTapProfile(_ sender: Any) {
+        delegate?.onTapProfile(for: self)
+    }
+    
     @IBAction func onRetweet(_ sender: Any) {
         delegate?.onRetweet(for: self)
     }
@@ -65,6 +72,8 @@ class TweetCell: UITableViewCell {
     @IBAction func onFavoriting(_ sender: Any) {
         delegate?.onFavorite(for: self)
     }
+    
+    
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
@@ -77,4 +86,7 @@ class TweetCell: UITableViewCell {
 protocol TableViewCellDelegate: class {
     func onRetweet(for cell:TweetCell)
     func onFavorite(for cell:TweetCell)
+    func onTapProfile(for cell:TweetCell)
+    //func onReply(for cell:TweetCell)
+    
 }

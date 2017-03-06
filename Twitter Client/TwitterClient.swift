@@ -16,6 +16,7 @@ class TwitterClient: BDBOAuth1SessionManager {
     var loginSuccess: (() -> ())?
     var loginfailure: ((Error)->())?
     
+    // Log in function, asks user for authentication to twitter.
     func login(success: @escaping () -> (), failure: @escaping (Error) -> ()){
         
         loginSuccess = success
@@ -36,12 +37,14 @@ class TwitterClient: BDBOAuth1SessionManager {
         })
     }
     
+    // Log user out function
     func logout() {
         User.currentUser = nil
         deauthorize()
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "UserDidLogout"), object: nil)
     }
     
+    // Save user after user authentication
     func handleOpenURL(url: URL) {
         
         let requestToken = BDBOAuth1Credential(queryString: url.query)
@@ -64,6 +67,19 @@ class TwitterClient: BDBOAuth1SessionManager {
         })
         
         
+    }
+    
+    // Get user info function
+    func getProfileInfo(for screenName: String, success: @escaping (Tweet) -> (), failure: @escaping (Error) -> ()){
+        post("1.1/users/show.json?screen_name=\(screenName)", parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
+            
+            let dictionary = response as! NSDictionary
+            let tweet = Tweet(dictionary: dictionary)
+            success(tweet)
+            
+        }) { (task: URLSessionDataTask?, error: Error) in
+            failure(error)
+        }
     }
     
     // retweet function
@@ -131,6 +147,7 @@ class TwitterClient: BDBOAuth1SessionManager {
         }
     }
     
+    // Get the user's home Timeline of tweets
     func homeTimeline(success: @escaping ([Tweet]) -> (), failure: @escaping (Error) -> ()){
         get("1.1/statuses/home_timeline.json", parameters: nil, progress: nil, success:{ (task: URLSessionDataTask, response: Any?) in
             
@@ -144,6 +161,7 @@ class TwitterClient: BDBOAuth1SessionManager {
         })
     }
     
+    // Get the current authenticated user's User object
     func currentAccount(success: @escaping (User)->(), failure: @escaping (Error)->()){
         get("1.1/account/verify_credentials.json", parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
             print("user: \(response!)")

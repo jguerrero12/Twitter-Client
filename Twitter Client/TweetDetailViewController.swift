@@ -87,8 +87,8 @@ class TweetDetailViewController: UIViewController {
     func update(){
         tweetTxt.text = tweet.text
         timeLabel.text = "\(DateFormatter.localizedString(from: tweet.timestamp!, dateStyle: .short, timeStyle: .short))"
-        usernameLabel.text = tweet.username
-        screennameLabel.text = "@\(tweet.screenname!)"
+        usernameLabel.text = tweet.user.name
+        screennameLabel.text = "@\((tweet.user.screenName)!)"
         if tweet.didFavorite! {
             favoriteButton.setImage(UIImage(named: "favor-icon-red"), for: .normal)
         }
@@ -105,7 +105,7 @@ class TweetDetailViewController: UIViewController {
         favoriteCountLabel.text = "\(tweet.favoritesCount)"
         retweetCountLabel.text = "\(tweet.retweetCount)"
         
-        if let url = tweet.profileIconURL {
+        if let url = tweet.user?.profileURL {
             profileImage.setImageWith(url)
         }
         else{
