@@ -108,7 +108,7 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 ## Notes
 
 - Discovered how to make multiple segues
-- (took time) When user creates a tweet, authentication error occures. 
+- (took time) When user creates a tweet, authentication error: 401 sometimes occurrs - works when user logs out then signs in, however shortly after this event, the error returns upon creating another tweet.
 
 ## License
 
